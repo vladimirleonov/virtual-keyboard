@@ -66,6 +66,12 @@ document.addEventListener("keydown", (e) => {
     }
     return;
   } 
+  //Tab
+  if (e.code === 'Tab') {
+    e.preventDefault();
+    addTab(textarea);
+    return;
+  }
 
   keys.forEach((key) => {
     if (key.className.includes(e.code)) {
