@@ -72,6 +72,12 @@ document.addEventListener("keydown", (e) => {
     addTab(textarea);
     return;
   }
+  //Delete
+  if (e.code === "Delete") {
+    e.preventDefault();
+    deleteNextChar(textarea);
+    return;
+  }
 
   keys.forEach((key) => {
     if (key.className.includes(e.code)) {
