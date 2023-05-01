@@ -78,6 +78,15 @@ document.addEventListener("keydown", (e) => {
     deleteNextChar(textarea);
     return;
   }
+  //CapsLock
+  if (e.code === "CapsLock") {
+    e.preventDefault();
+    if (e.repeat) {
+      return; 
+    }
+    toggleCaps(keys);
+    return;
+  }
 
   keys.forEach((key) => {
     if (key.className.includes(e.code)) {
