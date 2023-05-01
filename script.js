@@ -37,27 +37,35 @@ document.addEventListener("keydown", (e) => {
 });
 
 document.addEventListener("keydown", (e) => {
-    //ctrl + alt
-    if (e.ctrlKey && e.altKey) {
-      console.log('ctrl alt');
-      keys.forEach((key) => {
-        Array.from(key.children).forEach((el) => {
-          if (el.className.includes("hidden")) {
-            el.classList.toggle("hidden");
-            Array.from(el.children).forEach((el) => {
-              console.log(el);
-              if (el.className.includes("caseDown") && el.className.includes("hidden")) {
-                //debugger;
-                el.classList.toggle("hidden");
-              }
-            });
-          } else {
-            el.classList.toggle("hidden");
-          }
-        });
+  //ctrl + alt
+  if (e.ctrlKey && e.altKey) {
+    console.log('ctrl alt');
+    keys.forEach((key) => {
+      Array.from(key.children).forEach((el) => {
+        if (el.className.includes("hidden")) {
+          el.classList.toggle("hidden");
+          Array.from(el.children).forEach((el) => {
+            console.log(el);
+            if (el.className.includes("caseDown") && el.className.includes("hidden")) {
+              //debugger;
+              el.classList.toggle("hidden");
+            }
+          });
+        } else {
+          el.classList.toggle("hidden");
+        }
       });
-      return;
+    });
+    return;
+  }
+  //Backspace
+  if (e.code === 'Backspace') {
+    e.preventDefault();
+    if (textarea.value.length) {
+      deletePrevChar(textarea); 
     }
+    return;
+  } 
 
   keys.forEach((key) => {
     if (key.className.includes(e.code)) {
