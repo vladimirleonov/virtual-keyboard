@@ -35,3 +35,22 @@ document.addEventListener("keydown", (e) => {
     }
   });
 });
+
+document.addEventListener("keydown", (e) => {
+  keys.forEach((key) => {
+    if (key.className.includes(e.code)) {
+        Array.from(key.children).forEach((el) => {
+          if (!el.className.includes("hidden")) {
+            Array.from(el.children).forEach((el) => {
+              if (!el.className.includes("hidden") && el.innerText) {
+                //if (!(e.ctrlKey || e.altKey || e.shiftKey)) {
+                  addChar(textarea, el.innerText); 
+                //}
+              } 
+            });
+          }
+        });
+      // }
+    }
+  });
+});
