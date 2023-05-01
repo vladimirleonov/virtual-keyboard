@@ -93,6 +93,15 @@ document.addEventListener("keydown", (e) => {
     textarea.value += "\n";
     return;
   }
+  //Shift
+  if (e.shiftKey) {
+    e.preventDefault();
+    // if (e.repeat) {
+    //   isShiftActive = false;
+    //   return; 
+    // }
+    toggleShift(keys, "keydown");
+  }
 
   keys.forEach((key) => {
     if (key.className.includes(e.code)) {
