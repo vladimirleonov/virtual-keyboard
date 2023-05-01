@@ -26,3 +26,12 @@ document.addEventListener("keyup", (e) => {
     }
   });
 });
+
+//add class active on click key
+document.addEventListener("keydown", (e) => {
+  keys.forEach((key) => {
+    if (key.className.includes(e.code) && !key.className.includes("CapsLock")) {
+      key.classList.add("active");
+    }
+  });
+});
