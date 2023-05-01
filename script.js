@@ -102,6 +102,12 @@ document.addEventListener("keydown", (e) => {
     // }
     toggleShift(keys, "keydown");
   }
+  //Space
+  if (e.code === "Space") {
+    e.preventDefault();
+    addSpace(textarea);
+    return;
+  }
 
   keys.forEach((key) => {
     if (key.className.includes(e.code)) {
