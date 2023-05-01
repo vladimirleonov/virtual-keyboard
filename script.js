@@ -87,6 +87,12 @@ document.addEventListener("keydown", (e) => {
     toggleCaps(keys);
     return;
   }
+  //Enter
+  if (e.code === "Enter") {
+    e.preventDefault();
+    textarea.value += "\n";
+    return;
+  }
 
   keys.forEach((key) => {
     if (key.className.includes(e.code)) {
