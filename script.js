@@ -1,4 +1,11 @@
 import createContainerWithMainElements from './js/createContainerWithMainElements.js';
+import deleteNextChar from './js/deleteNextChar.js';
+import deletePrevChar from './js/deletePrevChar.js';
+import addChar from './js/addChar.js';
+import addTab from './js/addTab.js';
+import toggleCaps from './js/toggleCaps.js';
+import toggleShift from './js/toggleShift.js';
+import addSpace from './js/addSpace.js';
 
 createContainerWithMainElements();
 
