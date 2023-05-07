@@ -11,12 +11,34 @@ createContainerWithMainElements();
 
 const textarea = document.querySelector(".textarea");
 const keys = document.querySelectorAll(".key");
+const shiftLeft = document.querySelector(".ShiftLeft");
+const shiftRight = document.querySelector(".ShiftRight");
+
 
 //prevent default textarea
 textarea.addEventListener("keydown", (e) => {
   e.preventDefault();
 });
 
+//!!! virtual-keyboard
+//on mousedown shift left
+shiftLeft.addEventListener("mousedown", (e) => {
+  toggleShift(keys, "keydown");
+});
+//on mousedown shift right
+shiftRight.addEventListener("mousedown", (e) => {
+  toggleShift(keys, "keydown");
+});
+
+//on mouseup shift left
+shiftLeft.addEventListener("mouseup", (e) => {
+  toggleShift(keys, "keyup");
+});
+//on mouseup shift right
+shiftRight.addEventListener("mouseup", (e) => {
+  toggleShift(keys, "keyup");
+});
+//!!!
 
 //remove class active on keyup
 document.addEventListener("keyup", (e) => {
