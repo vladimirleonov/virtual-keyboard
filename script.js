@@ -50,6 +50,11 @@ keys.forEach((key) => {
       }
       toggleCaps(keys);
       return;
+    } else if (e.target.innerText === "Backspace") {
+      if (textarea.value.length) {
+        deletePrevChar(textarea);
+      }
+      return;
     } else {
       addChar(textarea, e.target.innerText);
     }
