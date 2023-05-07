@@ -55,6 +55,9 @@ keys.forEach((key) => {
         deletePrevChar(textarea);
       }
       return;
+    } else if (e.target.innerText === "Del") {
+      deleteNextChar(textarea);
+      return;
     } else {
       addChar(textarea, e.target.innerText);
     }
