@@ -14,6 +14,15 @@ const keys = document.querySelectorAll(".key");
 const shiftLeft = document.querySelector(".ShiftLeft");
 const shiftRight = document.querySelector(".ShiftRight");
 
+window.onload = function () {
+  console.log(localStorage.getItem('language'));
+  if (localStorage.getItem('language') === "eng") {
+    setLanguage("eng");
+    changeLanguage();
+  } else {
+    setLanguage("rus");
+  }
+}
 
 //prevent default textarea
 textarea.addEventListener("keydown", (e) => {
@@ -70,17 +79,18 @@ keys.forEach((key) => {
 });
 //!!!
 
+//!!! physical-keyboard
 //remove class active on keyup
 document.addEventListener("keyup", (e) => {
-  console.log(e);
   //Shift
   if (e.key === "Shift") {
-    console.log('shift up');
     e.preventDefault();
     toggleShift(keys, "keyup");
   }
   keys.forEach((key) => {
-    if (key.className.includes("active") && !key.className.includes("CapsLock")) {
+    if (key.className.includes("active") &&
+      !key.className.includes("CapsLock")
+    ) {
       key.classList.remove("active");
     }
   });
@@ -98,24 +108,9 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("keydown", (e) => {
   //ctrl + alt
   if (e.ctrlKey && e.altKey) {
-    console.log('ctrl alt');
-    keys.forEach((key) => {
-      Array.from(key.children).forEach((el) => {
-        if (el.className.includes("hidden")) {
-          el.classList.toggle("hidden");
-          Array.from(el.children).forEach((el) => {
-            console.log(el);
-            if (el.className.includes("caseDown") && el.className.includes("hidden")) {
-              //debugger;
-              el.classList.toggle("hidden");
-            }
-          });
-        } else {
-          el.classList.toggle("hidden");
-        }
-      });
-    });
-    return;
+    const currentLanguage = localStorage.getItem("language");
+    currentLanguage === "rus" ? setLanguage('eng') : setLanguage('rus'); 
+    changeLanguage();
   }
   //Backspace
   if (e.code === 'Backspace') {
@@ -155,10 +150,6 @@ document.addEventListener("keydown", (e) => {
   //Shift
   if (e.shiftKey) {
     e.preventDefault();
-    // if (e.repeat) {
-    //   isShiftActive = false;
-    //   return; 
-    // }
     toggleShift(keys, "keydown");
   }
   //Space
@@ -170,18 +161,51 @@ document.addEventListener("keydown", (e) => {
 
   keys.forEach((key) => {
     if (key.className.includes(e.code)) {
-        Array.from(key.children).forEach((el) => {
-          if (!el.className.includes("hidden")) {
-            Array.from(el.children).forEach((el) => {
-              if (!el.className.includes("hidden") && el.innerText) {
-                //if (!(e.ctrlKey || e.altKey || e.shiftKey)) {
-                  addChar(textarea, el.innerText); 
-                //}
+      Array.from(key.children).forEach((el) => {
+        if (!el.className.includes("hidden")) {
+          Array.from(el.children).forEach((el) => {
+            if (!el.className.includes("hidden") && el.innerText) {
+              if (!e.ctrlKey && !e.shiftKey && !e.altKey) {
+                addChar(textarea, el.innerText);
+              } else if (
+                (e.ctrlKey || e.altKey || e.shiftKey) &&
+                e.key !== "Control" &&
+                e.key !== "Alt" &&
+                e.key !== "Shift"
+              ) {
+                addChar(textarea, el.innerText);
+              } else {
+                return;
               } 
-            });
-          }
-        });
-      // }
+            } 
+          });
+        }
+      });
     }
   });
 });
+
+
+//set language
+function setLanguage(language) {
+  localStorage.setItem('language', language);
+}
+
+//change language
+function changeLanguage() {
+  keys.forEach((key) => {
+    Array.from(key.children).forEach((el) => {
+      if (el.className.includes("hidden")) {
+        el.classList.toggle("hidden");
+        Array.from(el.children).forEach((el) => {
+          if (el.className.includes("caseDown") && el.className.includes("hidden")) {
+            el.classList.toggle("hidden");
+          }
+        });
+      } else {
+        el.classList.toggle("hidden");
+      }
+    });
+  });
+  return;
+}
