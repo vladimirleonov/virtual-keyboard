@@ -38,6 +38,17 @@ shiftLeft.addEventListener("mouseup", (e) => {
 shiftRight.addEventListener("mouseup", (e) => {
   toggleShift(keys, "keyup");
 });
+
+keys.forEach((key) => {
+  key.addEventListener("click", (e) => {
+    if (e.target.innerText === "Tab") {
+      addTab(textarea);
+      return;
+    } else {
+      addChar(textarea, e.target.innerText);
+    }
+  });
+});
 //!!!
 
 //remove class active on keyup
