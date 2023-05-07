@@ -58,6 +58,9 @@ keys.forEach((key) => {
     } else if (e.target.innerText === "Del") {
       deleteNextChar(textarea);
       return;
+    } else if (e.target.innerText === "Enter") {
+      textarea.value += "\n";
+      return;
     } else {
       addChar(textarea, e.target.innerText);
     }
