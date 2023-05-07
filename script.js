@@ -61,6 +61,8 @@ keys.forEach((key) => {
     } else if (e.target.innerText === "Enter") {
       textarea.value += "\n";
       return;
+    } else if (e.target.innerText === "Shift") {
+      return;
     } else {
       addChar(textarea, e.target.innerText);
     }
