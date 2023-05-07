@@ -44,6 +44,12 @@ keys.forEach((key) => {
     if (e.target.innerText === "Tab") {
       addTab(textarea);
       return;
+    } else if (e.target.innerText === "CapsLock") {
+      if (e.repeat) {
+        return;
+      }
+      toggleCaps(keys);
+      return;
     } else {
       addChar(textarea, e.target.innerText);
     }
