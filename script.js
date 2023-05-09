@@ -6,13 +6,7 @@ import addTab from './js/addTab.js';
 import toggleCaps from './js/toggleCaps.js';
 import toggleShift from './js/toggleShift.js';
 import addSpace from './js/addSpace.js';
-
-createContainerWithMainElements();
-
-const textarea = document.querySelector(".textarea");
-const keys = document.querySelectorAll(".key");
-const shiftLeft = document.querySelector(".ShiftLeft");
-const shiftRight = document.querySelector(".ShiftRight");
+import addEnter from './js/addEnter.js';
 
 window.onload = function () {
   console.log(localStorage.getItem('language'));
@@ -23,6 +17,15 @@ window.onload = function () {
     setLanguage("rus");
   }
 }
+
+createContainerWithMainElements();
+
+const textarea = document.querySelector(".textarea");
+const keys = document.querySelectorAll(".key");
+const shiftLeft = document.querySelector(".ShiftLeft");
+const shiftRight = document.querySelector(".ShiftRight");
+
+
 
 //prevent default textarea
 textarea.addEventListener("keydown", (e) => {
@@ -68,12 +71,14 @@ keys.forEach((key) => {
       deleteNextChar(textarea);
       return;
     } else if (e.target.innerText === "Enter") {
-      textarea.value += "\n";
+      e.preventDefault();
+      addEnter();
       return;
     } else if (e.target.innerText === "Shift") {
       return;
     } else {
       addChar(textarea, e.target.innerText);
+      //return;
     }
   });
 });
@@ -144,7 +149,7 @@ document.addEventListener("keydown", (e) => {
   //Enter
   if (e.code === "Enter") {
     e.preventDefault();
-    textarea.value += "\n";
+    addEnter();
     return;
   }
   //Shift
