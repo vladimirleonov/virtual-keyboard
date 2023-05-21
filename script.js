@@ -7,9 +7,12 @@ import toggleCaps from './js/toggleCaps.js';
 import toggleShift from './js/toggleShift.js';
 import addSpace from './js/addSpace.js';
 import addEnter from './js/addEnter.js';
+import convertToEnglishLayout from "./js/convertToEnglishLayout.js";
+
+//convertToEnglishLayout
 
 window.onload = function () {
-  console.log(localStorage.getItem('language'));
+  //console.log(localStorage.getItem('language'));
   if (localStorage.getItem('language') === "eng") {
     setLanguage("eng");
     changeLanguage();
@@ -22,10 +25,6 @@ createContainerWithMainElements();
 
 const textarea = document.querySelector(".textarea");
 const keys = document.querySelectorAll(".key");
-const shiftLeft = document.querySelector(".ShiftLeft");
-const shiftRight = document.querySelector(".ShiftRight");
-
-
 
 //prevent default textarea
 textarea.addEventListener("keydown", (e) => {
@@ -33,53 +32,42 @@ textarea.addEventListener("keydown", (e) => {
 });
 
 //!!! virtual-keyboard
-//on mousedown shift left
-shiftLeft.addEventListener("mousedown", (e) => {
-  toggleShift(keys, "keydown");
-});
-//on mousedown shift right
-shiftRight.addEventListener("mousedown", (e) => {
-  toggleShift(keys, "keydown");
-});
+const addDispatchEventOnKey = (key, code, keyEvent) => {
+  console.log("key:", key);
+  console.log("code:", code);
+  console.log(`${keyEvent} on ${code}`);
+  let event = new KeyboardEvent(keyEvent, {
+    bubbles: true,
+    cancelable: true,
+    key: key,
+    code: code,
+    ctrlKey: key === "Ctrl", 
+    shiftKey: key === "Shift", 
+    altKey: key === "Alt", 
+    metaKey: key === "Win"
+  });
+  document.dispatchEvent(event);
+  return;
+}
 
-//on mouseup shift left
-shiftLeft.addEventListener("mouseup", (e) => {
-  toggleShift(keys, "keyup");
-});
-//on mouseup shift right
-shiftRight.addEventListener("mouseup", (e) => {
-  toggleShift(keys, "keyup");
+keys.forEach((key) => {
+  key.addEventListener("mousedown", (e) => {
+    const eventKey = e.target.innerText;
+    const parentElement = e.target.parentNode;
+    const grandparentElement = parentElement.parentNode;
+    const code = grandparentElement.classList[1];
+    addDispatchEventOnKey(eventKey, code, "keydown");
+  });
 });
 
 keys.forEach((key) => {
-  key.addEventListener("click", (e) => {
-    if (e.target.innerText === "Tab") {
-      addTab(textarea);
-      return;
-    } else if (e.target.innerText === "CapsLock") {
-      if (e.repeat) {
-        return;
-      }
-      toggleCaps(keys);
-      return;
-    } else if (e.target.innerText === "Backspace") {
-      if (textarea.value.length) {
-        deletePrevChar(textarea);
-      }
-      return;
-    } else if (e.target.innerText === "Del") {
-      deleteNextChar(textarea);
-      return;
-    } else if (e.target.innerText === "Enter") {
-      e.preventDefault();
-      addEnter();
-      return;
-    } else if (e.target.innerText === "Shift") {
-      return;
-    } else {
-      addChar(textarea, e.target.innerText);
-      //return;
-    }
+  key.addEventListener("mouseup", (e) => {
+    //console.log(e);
+    const eventKey = e.target.innerText;
+    const parentElement = e.target.parentNode;
+    const grandparentElement = parentElement.parentNode;
+    const code = grandparentElement.classList[1];
+    addDispatchEventOnKey(eventKey, code, "keyup");
   });
 });
 //!!!
@@ -88,7 +76,8 @@ keys.forEach((key) => {
 //remove class active on keyup
 document.addEventListener("keyup", (e) => {
   //Shift
-  if (e.key === "Shift") {
+  if (e.shiftKey) {
+    console.log(e);
     e.preventDefault();
     toggleShift(keys, "keyup");
   }
@@ -113,6 +102,7 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("keydown", (e) => {
   //ctrl + alt
   if (e.ctrlKey && e.altKey) {
+    console.log(e);
     const currentLanguage = localStorage.getItem("language");
     currentLanguage === "rus" ? setLanguage('eng') : setLanguage('rus'); 
     changeLanguage();
@@ -120,6 +110,7 @@ document.addEventListener("keydown", (e) => {
   //Backspace
   if (e.code === 'Backspace') {
     e.preventDefault();
+    console.log(e);
     if (textarea.value.length) {
       deletePrevChar(textarea); 
     }
@@ -128,18 +119,21 @@ document.addEventListener("keydown", (e) => {
   //Tab
   if (e.code === 'Tab') {
     e.preventDefault();
+    console.log(e);
     addTab(textarea);
     return;
   }
   //Delete
   if (e.code === "Delete") {
     e.preventDefault();
+    console.log(e);
     deleteNextChar(textarea);
     return;
   }
   //CapsLock
   if (e.code === "CapsLock") {
     e.preventDefault();
+    console.log(e);
     if (e.repeat) {
       return; 
     }
@@ -149,17 +143,20 @@ document.addEventListener("keydown", (e) => {
   //Enter
   if (e.code === "Enter") {
     e.preventDefault();
+    console.log(e);
     addEnter();
     return;
   }
   //Shift
   if (e.shiftKey) {
     e.preventDefault();
+    console.log(e);
     toggleShift(keys, "keydown");
   }
   //Space
   if (e.code === "Space") {
     e.preventDefault();
+    console.log(e);
     addSpace(textarea);
     return;
   }
@@ -170,16 +167,22 @@ document.addEventListener("keydown", (e) => {
         if (!el.className.includes("hidden")) {
           Array.from(el.children).forEach((el) => {
             if (!el.className.includes("hidden") && el.innerText) {
-              if (!e.ctrlKey && !e.shiftKey && !e.altKey) {
+              //console.log(e);
+              if (!e.ctrlKey && !e.shiftKey && !e.altKey && !e.metaKey) {
+                console.log(e);
                 addChar(textarea, el.innerText);
-              } else if (
-                (e.ctrlKey || e.altKey || e.shiftKey) &&
-                e.key !== "Control" &&
-                e.key !== "Alt" &&
-                e.key !== "Shift"
-              ) {
-                addChar(textarea, el.innerText);
-              } else {
+              }
+              // else if (
+              //   (e.ctrlKey || e.altKey || e.shiftKey || e.metaKey) &&
+              //   e.key !== "Control" &&
+              //   e.key !== "Alt" &&
+              //   e.key !== "Shift" &&
+              //   e.key !== "Meta"
+              // ) {
+              //   console.log(e);
+              //   addChar(textarea, el.innerText);
+              // }
+              else {
                 return;
               } 
             } 
@@ -189,6 +192,7 @@ document.addEventListener("keydown", (e) => {
     }
   });
 });
+//!!!
 
 
 //set language

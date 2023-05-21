@@ -5,9 +5,9 @@ const toggleShift = (keys, status) => {
         Array.from(el.children).forEach((el) => {
           //console.log('toggle shift');
           if (status === "keydown") {
-            console.log("keydown");
+            //console.log("keydown");
             if (el.className.includes("caseDown")) {
-              console.log("caseDown");
+              //console.log("caseDown");
               if (!el.className.includes("hidden")) {
                 el.classList.add("hidden");
               }
@@ -18,9 +18,9 @@ const toggleShift = (keys, status) => {
               }
             }
           } else if (status === "keyup") {
-            console.log("keyup");
+            //console.log("keyup");
             if (el.className.includes("caseDown")) {
-              console.log("caseDown");
+              //console.log("caseDown");
               if (el.className.includes("hidden")) {
                 el.classList.remove("hidden");
               }
